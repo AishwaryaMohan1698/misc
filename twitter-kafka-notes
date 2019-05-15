@@ -1,0 +1,42 @@
+cmd:
+
+cd /usr/local/kafka
+bin/zookeeper-server-start.sh config/zookeeper.properties
+bin/kafka-server-start.sh config/server.properties
+bin/kafka-console-producer.sh --broker-list localhost:9092 --topic new_topic
+ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic new_topic
+
+
+http://localhost:8080/actuator/refresh
+http://localhost:8080/config/keywords
+http://localhost:8040/twitter-producer-app.properties
+
+
+locations[][]= bounding box co-ords: SW and NE.  
+
+Center of New Delhi is 28.6 77.2
+// New Delhi India
+lat = 28.6;
+lon = 77.2;
+double lon1 = lon - .5;
+double lon2 = lon + .5;
+double lat1 = lat - .5;
+double lat2 = lat + .5;
+double box[][] = {{lon1, lat1}, {lon2, lat2}};
+
+india: 65.000    6.000   97.350   35.956 
+chennai : 78.903809,12.667137,80.992584,13.667338
+
+
+
+No, there's no way to filter on a user's profile location using Twitter's basic streaming API. The only way you'd be able to do that would be via the commercial Gnip PowerTrack API, with the geolocation enrichment.
+
+
+ you can use Search API for the hostorical tweets up to a limited time. It allows you to give a date interval. However, you can use Streamin API to catch the recently posted tweets as a tweet stream that contains the keywords that you give.
+
+
+cannot search with language withpout atleast one track
+
+You can't use autowired properties in the class consturctor since Spring just inject the @Autowired properties after the creation of that class. However you can use the autowired properties in the method with annotation @PostConstruct which will run right after the constructor run.
+
+status.getPlace().getCountryCode()
