@@ -1,0 +1,475 @@
+ANGULAR 7 - Notes 1
+ (1)
+framework to build client side applications
+SPA- single page applications -> part of the page loads async without reloading
+JS reliant pages -> angular 
+modular approach
+components -> reusable
+validation, routing, unit testable, maintainable
+typescript (google)
+AngularJS - 2010
+Angular (2, 4) - 2016
+Angular (5) - 2017
+Angular (6,7) - 2018
+Semantic versioning
+
+(2)
+Angular cli -> commands
+
+sudo npm install -g @angular/cli
+ng version
+ng new <file-name> -> create folder
+ng serve -> run the app
+
+(3)
+angular app -> collection of modules
+root-module  called app-module
+module -> collection of components and services
+component -> html (view) + class (control view)
+service -> business logic
+modules interact and render view
+
+(4) 
+ng new <filename> installs all dependencies mentioned in package.json
+npm start -> npm serve
+src/main.ts -> entry point
+app contains root module and component
+
+main bootstraps app module bootstraps app component (html + tsfile)
+
+(5) COMPONENT
+template (html/view) + class (code, ts,data and methods) + metadata (info decides if a class is an angular component)
+
+metadata of a class is in @Component() -> called decorator 
+(selector -> custom html tag to be used in html page,
+templateUrl -> points to an html file i.e. a view of the conponent,
+styleUrl-> points to a css file)
+
+creating a new component:
+ng g c newComponent
+g -> generate
+c -> component
+
+new folder is created with html, css, ts files
+must be notified to app
+app.module -> declarations array -> include className (automatic in cli)
+
+ways to include component:
+1. <app-componentName></app-componentName>  -> selector tag
+2. <div class="app-componentName"></div>
+3. enclose selector with[] in component
+include as attribute in div tag <div componentName>
+
+template, css styles can be used inline as follows:
+instead of templateUrl, use the actual template i.e. the html element
+template : '<div>Hello</div>'
+styles: [`div{color:red;}`]
+instead of ' use ` to include multiple lines
+
+ANGULAR: Notes 2
+
+Interpolation:
+
+..class.. {
+public name ="tae"
+}
+
+template:
+valid:
+ '<h1>welcome {{name}}</h1>`
+<h1>{{variableName}}</h1>
+<h1>{{"string"+variableName}}</h1>
+<h1>{{9-8}}</h1>
+<h1>{{methodCall()}}</h1>
+
+invalid:
+<h1>{{a=9}}</h1> -> assignments
+<h1>{{window.location.href}}</h1> -> JS global variables (must be assigned in class toa var and used)
+
+
+PROPERTY BINDING:
+difference between HTML property and a DOM element:
+<input type="text" value="A">
+inspect , in console:
+$0.getAttribute('value') ="A"
+$0.value="A"
+enter B in browser:
+$0.getAttribute('value') ="A"
+$0.value="B"
+
+attribute did not change
+value changes
+
+attribute - HTML
+property - DOM (document object model)
+
+attributes initialize dom props and are done. cannot change
+value can change
+
+inside class, 
+public myId="testId";
+template:
+<input [id]="myId" type="text" value="A"> -> prop binding
+(bind-propertyName can be used :
+<input bind-id=myId type="text" value="A"> -> prop binding
+)
+<input id="{{myId}}" type="text" value="A"> -> interpolation
+
+limitation of interpolation : only string values
+need : boolean too
+
+in tag, disabled is inherently true, setting to false has no effect
+disabled,
+disabled ="false"
+disabled ="{{false}}"  -> no use
+
+[disabled] ="false"
+[disabled] ="true" -> has effect
+
+public isDisabled =true;
+[disabled] = "isDisabled"
+bind-disabled = "isDisabled"
+
+CLASS BINDING:
+a regular class attribute has no effect when class binding is used
+
+1. class="text-success" -> class in html
+
+2. public successClass="text-success"
+.text-success {
+color: green;
+}
+[class]="successClass"
+
+3. [class]="successClass" class="text-success" -> class has no effect
+
+4. public hasError =true;
+[class.text-danger]="hasError" > becomes true and effect is applied -> conditional application of a single class
+
+5. for multiple class (conditionally):
+ng class directives
+[ngClass] ="messageClasses"
+
+public messageClasses = { 
+	"text-success": !this.hasError,
+	"text-danger":  this.hasError
+						}
+
+<h1 [ngClass] ="messageClasses" >hello<h1>
+
+
+STYLE BINDING:
+1. <h2 [style.color]="'green'"> hello </h2>
+
+2. <h2 [style.color]="hasError ? 'red' : 'green' "> hello </h2>
+
+3. public colorName='red';
+<h2 [style.color]=" colorName "> hello </h2>
+
+4. public styleValues= {
+	color: "blue",
+	fontStyle="italic"
+					}
+<h2 [ngStyle]=" styleValues "> hello </h2>
+
+EVENT BINDING:
+
+1. onclick() { console.log("hello") };
+<button (click)="onclick()">HELLO</button>
+
+2. public greeting ="";
+onclick() { greeting="hello" };
+<button (click)="onclick()">Hello</button>
+{{greeting}} -> show nothing. after click, hello
+
+3.  public greeting ="";
+onclick() { greeting="hello" };
+<button (click)="onclick($event)">Hello</button>
+{{greeting}} -> show nothing. after click, hello
+
+$event -> gives info of all dom events raised
+eg: click -> mouse event
+
+4. <button (click)="greeting='Welcome'">{{greeting}}</button>
+
+
+TEMPLATE REFERENCE VARIABLES:
+data in view for class and template
+value in input to perform some validation 
+
+#variableName in input tag
+variableName.value -> gives input entered
+variableName -> gives the html element . All dom properties can be accessed
+
+<input #myInput type="text">
+<button (click)="logMessage(myInput.value)">Log </button>
+
+logMessage(value){ console.log(value); }
+
+TWO WAY BINDING:
+
+view and class 
+ngModel directive
+[] -> property binding -> class to view
+() -> event binding -> view to class
+import forms module
+input -> class prop -> template
+
+public name="";
+
+<input  [(ngModel)] ="name"  type="text" > {{name}}
+
+
+STRUCTURAL DIRECTIVES:
+
+add or remove HTML elements
+1. ngIf
+2. ngSwitch
+3 ngFor
+
+<h2 *ngIf="true">
+	
+</h2>
+
+
+ANGULAR NOTES 3
+
+Structural directives:
+1. ngIf -> rendered if true
+2. ngFor
+3. ngSwitch
+
+
+1. ngIf -> rendered if true
+methods:
+1.
+  displayName = false;
+  name = "Aaron";
+
+<h1 *ngIf="displayName; else elseBlock">
+  Hello {{name}}
+</h1>
+
+<ng-template #elseBlock>
+  <h1>Hello anon</h1>
+</ng-template>
+
+
+2. 
+  displayName = false;
+  name = "Aaron";
+
+<ng-template #thenBlock>
+  <h1>Hello {{name}}</h1>
+</ng-template>
+
+<ng-template #elseBlock>
+  <h1>Hello anon</h1>
+</ng-template>
+
+<div *ngIf="displayName;then thenBlock; else elseBlock"></div>
+
+
+2. ngSwitch
+
+  color ="orange"
+
+<div [ngSwitch]="color" [style.color]="color">
+  <div *ngSwitchCase="'red'">Red</div>
+  <div *ngSwitchCase="'blue'">Blue</div>
+  <div *ngSwitchCase="'green'">Green</div>
+  <div *ngSwitchDefault>Orange</div>
+</div>
+
+
+3. ngFor
+  public colors = ["red", "blue", "green", "orange"];
+
+<div *ngFor="let color of colors; index as i">
+  <div [style.color]="color"> {{i}} -> {{color}}</div>
+</div>
+
+<div *ngFor="let color of colors; first as f>
+  <div [style.color]="color"> {{f}} -> {{color}}</div>
+</div>
+f -> shows true if it is the first component, else false
+last as l
+even as e
+odd as o
+
+ngif used along with ngif to set class etc.
+
+
+ANGULAR NOTES 4
+
+Component interaction
+@Input() -> child accepts data from parent
+@Output() -> child sends data to parent
+
+Parent to child:
+parent :
+name="Ken" -> declaration
+<app-child [parentData]="name"></app-child> -> bind variable to component
+
+child :
+@Input() public parentData; -> @Input says that data comes from parent
+<h2>
+  {{"Hello " + parentData}}
+</h2>
+
+@Input('parentData') public name; -> input variable name can be changed for use within child
+<h2>
+  {{"Hello " + name}}
+</h2>
+
+Child to parent:
+{<app-child [parentData]="name"></app-child> -> such binding not possible}
+(event is used)
+
+child:
+@Output() public childEvent = new EventEmitter();
+
+  fireEvent() {
+    console.log("child event emitted");
+    this.childEvent.emit('Tokyo Ghoul');
+  } 
+<button (click)="fireEvent()"> Send Event </button>
+
+parent:
+public message = "";
+<app-child (childEvent)="message=$event"></> 
+->(childEvent) catches child event 
+->$event gives the argument passed
+-> assigned to message variable
+message can be displayed
+
+
+{{filterOption | json}}
+{{filterOption.fieldName}}
+{{filterOption.fieldOptions}}
+
+
+
+PIPES:
+allow us to transform data before display (only for view, no change in property)
+
+{{name | lowercase }}
+{{name | uppercase }}
+{{name | titlecase }} -> caps start letter
+{{name | slice:3:5 }} -> string starting from index 3 till before 5
+{{person | json }} -> gives json rep of object
+{{5.678 | number:'1.2-3'}}  
+-> 1-min no of digits before decimal
+-> 2-min no of digits after decimal
+-> 3-max no of digits after decimal
+	- if no of digits is more than available, 0 is appended
+{{5.678 | percent}}  
+{{5.678 | currency}}  
+{{5.678 | currency : 'GBP'}}  
+{{5.678 | currency : 'GBP' : 'code'}}  
+{{date}}
+{{date | date:'short'}}
+{{date | date:'shortDate'}} (longDate, mediumDate)
+{{date | date:'shortTime'}}
+
+
+
+
+
+
+
+
+
+*ngFor="let filterOption of filterOptions"
+
+
+
+
+
+    <div *ngFor="let filterField of filterFields"></div>
+ANGULAR FORMS:
+
+TDF:
+much of the code resides in template (html)
+easier and similar to angularJS forms
+two way data binding -> no need to keep track of input field values and  manually react to change in input -> ngModel directive is used
+bulky html code and minimal component code
+ngForm  and ngModel -> state and validity tracked for form and form elements
+disadv: 
+1. unit testing 
+-> form validation not possible in unit testing 
+-> only end to end testing in browser
+
+2. complex forms
+-> readability decreases
+
+used when:
+-> simple form
+-> unit testing
+
+two-way data binding,
+change tracking, 
+validation, 
+error handling
+
+
+NODE.JS
+
+global object: -> can be accessed everywhere  (in client, browser, file)
+console 
+setTimeout()
+clearTimeout()
+setInterval()
+clearInterval()
+
+in browser -> window is global
+
+window.console.log()
+
+all variables declared are available in the window object -> in JS (browser)
+in nodejs, it is 'global'
+
+global.console.log()
+
+but var and fn declared are not available in global
+
+eg: 
+var a="ola";
+console.log(global.a); -> undefined
+
+in OOPs, we say public and private
+in node, 
+every file is a module
+var and fn in a file are available only within it
+we need to export explicitly to use it outside a module
+console.log(module) -> display all properties like exports, children etc.
+module is not global
+
+eg:
+to export:
+module.exports.nameToBeUsedOutside=var/fnName;
+
+to load/import:
+const newModuleName = require('path');
+path has a .js extension automatically
+
+newModuleName.log('jk');
+newModuleName can be used to access var and fn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
