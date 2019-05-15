@@ -1,0 +1,90 @@
+version: '2.4'
+services:
+  eureka-server:
+    build:
+      context: ../app-eureka-server
+      dockerfile: Dockerfile
+    image: docker-eureka-server-image
+    container_name: docker-eureka-server-container
+    ports:
+    - 8000:8000
+    networks:
+    - my-network1
+    healthcheck:
+      test:
+      - CMD
+      - curl
+      - -f
+      - http://docker-eureka-server-container:8000
+      interval: 10s
+      timeout: 5s
+      retries: 5
+#  app-zuul:
+#    build:
+#      context: ../app-zuul
+#      dockerfile: Dockerfile
+#    depends_on:
+#      eureka-server:
+#        condition: service_healthy
+#    image: docker-app-zuul-image
+#    container_name: docker-app-zuul-container
+#    ports:
+#    - 8030:8030
+#    networks:
+#    - my-network1
+#    healthcheck:
+#      test:
+#      - CMD
+#      - curl
+#      - -f
+#      - http://docker-app-zuul-container:8030
+#      interval: 10s
+#      timeout: 5s
+#      retries: 10
+  app-config-server:
+    build:
+      context: ../app-config-server
+      dockerfile: Dockerfile
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    image: docker-app-config-server-image
+    container_name: docker-app-config-server-container
+    ports:
+    - 8040:8040
+    networks:
+    - my-network1
+#    healthcheck:
+#      test:
+#      - CMD
+#      - curl
+#      - -f
+#      - http://docker-app-config-server-container:8040/
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+  app-config-client:
+    build:
+      context: ../app-config-client
+      dockerfile: Dockerfile
+#    depends_on:
+#      app-config-server:
+#        condition: service_healthy
+    image: docker-app-config-client-image
+    container_name: docker-app-config-client-container
+    ports:
+    - 8050:8050
+    networks:
+    - my-network1
+#    healthcheck:
+#      test:
+#      - CMD
+#      - curl
+#      - -f
+#      - http://docker-app-config-client-container:8050
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+networks:
+  my-network1:
+    name: app-bridge-1

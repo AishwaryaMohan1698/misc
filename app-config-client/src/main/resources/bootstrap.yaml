@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: app-config-client
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: app-config-server
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://docker-eureka-server-container:8000/eureka/
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: refresh

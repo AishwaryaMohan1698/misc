@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: app-client
+server:
+  port: 8020
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://docker-eureka-server-container:8000/eureka/
+  instance:
+    preferIpAddress: true
+management:
+  security:
+    enabled: false 

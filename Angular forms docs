@@ -1,0 +1,63 @@
+ANGULAR FORMS:
+
+Forms -> basic requirement -> data entry
+Angular -> 2 approaches
+
+-capture events from view
+-validate input
+-create form model and data model to track state and validity
+
+Reactive			TDF
+-robust				-simple
+-scalable			-no
+-reusable			-no
+-unit testing possible/easy	-end to end testing
+-handle complex	forms		-easy to add to app
+-structured data model		-unstructured
+-validation by functions	-directives
+-explicit
+-immutable 			-mutable
+(to manage state of a form)
+
+(Immutability is a design pattern where something can't be modified after being instantiated. If we want to change the value of that thing, we must recreate it with the new value instead.)
+
+Reactive forms -> reactive programming -> built around observable streams
+Form fields - input value streams -> sync access to data
+
+Common blocks in both:
+-FormControl
+-FormGroup
+-FormArray
+-ControlValueAccessor - relates FormControl instances and DOM elements
+
+
+Form model -> to track value changes -> related to UI structure
+
+FormControl -> a class used to get and set values and validation of a form control such as <input> and <select> tag. 
+
+FormGroup -> has the role to track value and validity state of group of FormControl
+
+Source of truth : provides the value and status of the form element at a given point in time -> form model
+
+
+The abstraction of the form model promotes simplicity over structure. The template-driven form directive NgModel is responsible for creating and managing the FormControl instance for a given form element. It's less explicit, but you no longer have direct control over the form model. 
+
+REACTIVE FORMS:
+
+FormControl class extends AbstractControl (abstract class)
+AbstractControl -> base class of FormControl, FormGroup, FormArray
+
+diff btwn [formControl] and formControlName=""
+
+[formControl]->reference to FormControl instance 
+formControlName assigns string to forms module to look up the control by name
+
+[formGroup]="myForm"
+formControlName="name1"
+
+[formControl]="myForm.controls.name1"
+
+valueChanges-> observable -> function helps the subscriber obtain value/ message from publisher -> Observable instance defines subscriber function-> subscribe() method
+
+
+

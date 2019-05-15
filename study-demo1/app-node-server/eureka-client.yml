@@ -1,0 +1,19 @@
+eureka:
+  host: 'localhost'
+  port: 8000
+  servicePath: '/eureka/apps'
+
+instance:
+  instanceId: "app-node-service-instance"
+  app: 'APP-NODE-SERVICE'
+  hostName: 'localhost'
+  ipAddr: '127.0.0.1'
+  statusPageUrl: 'http://localhost:8060'
+  port:
+      '$': 8060
+      '@enabled': 'true'
+
+  vipAddress: 'app-node-service-ip'
+  dataCenterInfo:
+      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo'
+      name: 'MyOwn'
